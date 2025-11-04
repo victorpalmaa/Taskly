@@ -89,7 +89,7 @@ VITE_SUPABASE_ANON_KEY=<sua-anon-key>
 - Se usar Supabase, execute `supabase/schema.sql` no SQL Editor para criar a tabela e políticas.
 
 ## Scripts NPM
-- `npm run dev` — inicia o dev server (Vite).
+- `npm run dev` — inicia o dev server e abre o navegador automaticamente (Vite `--open`).
 - `npm run build` — gera produção em `dist/`.
 - `npm run preview` — pré-visualiza o build localmente.
 
@@ -181,7 +181,7 @@ start "" http://localhost:5173
 ```
 Salve como `taskly.cmd` em um diretório do PATH.
 
-> Dica: você pode ajustar o script para usar `vite --open` (alterando o script `dev` no `package.json`) e assim o navegador abre automaticamente na porta correta.
+> Nota: o script `dev` já usa `vite --open`, então o navegador abre automaticamente na porta correta.
 
 ## Supabase: esquema e migração de categorias
 Para manter apenas `trabalho` e `pessoal`, aplique o conteúdo de `supabase/schema.sql` no SQL Editor. Caso tenha dados antigos (`pessoais` ou `outras`), rode:
@@ -201,5 +201,11 @@ npm run preview
 ```
 Os arquivos prontos ficam em `dist/`.
 
+## Troubleshooting
+- Porta em uso ao iniciar o dev server: o Vite escolhe outra porta automaticamente; verifique o terminal e use a URL exibida. Com `--open`, o navegador já abre na porta correta.
+- Variáveis do Supabase ausentes: defina `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` no `.env`. Sem elas, o app usa dados mock e não persiste no Supabase.
+- Esquema não aplicado: execute `supabase/schema.sql` no SQL Editor do seu projeto Supabase antes de usar persistência real.
+- Erros de RLS (Row Level Security): garanta que as políticas em `schema.sql` estejam ativas e que você está usando a anon key correta.
+
 ## Licença
-Este projeto é distribuído sem licença específica neste repositório. Adapte conforme sua necessidade.
+Este projeto usa a licença MIT. Veja o arquivo `LICENSE` para detalhes.

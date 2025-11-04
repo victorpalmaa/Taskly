@@ -60,38 +60,51 @@ export default function TaskItem({ task, onEdit }) {
           <div className="text-xs font-semibold uppercase tracking-wide text-text-secondary mb-1">
             {categoryLabel(task.category)}
           </div>
-          <div className="flex items-center justify-between">
-            <h3 className="font-medium text-text-primary data-[completed=true]:line-through" data-completed={task.completed}>{task.title}</h3>
-            <div className="flex gap-1">
-              <Button variant={task.completed ? 'outline' : 'default'} size={task.completed ? 'sm' : 'default'} onClick={() => onEdit?.(task)}>
-                <Pencil size={18} /> Editar
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="danger" size={task.completed ? 'sm' : 'default'}>
-                    <Trash2 size={18} /> Excluir
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Excluir tarefa?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta ação não pode ser desfeita. Confirme para excluir.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter onConfirm={handleDelete} />
-                </AlertDialogContent>
-              </AlertDialog>
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-text-primary data-[completed=true]:line-through" data-completed={task.completed}>{task.title}</h3>
+              <div className="flex gap-1">
+                <Button
+                  variant={task.completed ? 'outline' : 'default'}
+                  size={task.completed ? 'sm' : 'default'}
+                  onClick={() => onEdit?.(task)}
+                  aria-label="Editar"
+                >
+                  <Pencil size={18} />
+                  {!task.completed && <span className="ml-1">Editar</span>}
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="danger" size={task.completed ? 'sm' : 'default'} aria-label="Excluir">
+                      <Trash2 size={18} />
+                      {!task.completed && <span className="ml-1">Excluir</span>}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Excluir tarefa?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Esta ação não pode ser desfeita. Confirme para excluir.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter onConfirm={handleDelete} />
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
-          </div>
           {task.description && (
             <p className="mt-1 text-sm text-text-secondary data-[completed=true]:text-text-secondary" data-completed={task.completed}>{task.description}</p>
           )}
           <div className="mt-2 flex items-center gap-3 text-xs text-text-secondary">
             {task.completed && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border bg-status-online-bg text-status-online-text border-status-online-text/40">
+              <motion.span
+                initial={{ opacity: 0, scale: 0.95, y: -2 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -2 }}
+                transition={{ duration: 0.18 }}
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border bg-status-online-bg text-status-online-text border-status-online-text/40"
+              >
                 <CheckCircle size={14} /> Concluída
-              </span>
+              </motion.span>
             )}
             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border ${priorityChipClass(task.priority)}`}>
               Prioridade: <span className="font-semibold">{displayPriority(task.priority)}</span>
