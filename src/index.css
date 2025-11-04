@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+html, body, #root { height: 100%; }
+
+@layer base {
+  body { @apply min-h-screen bg-bg-primary text-text-primary antialiased; }
+}
+
+.card {
+  @apply rounded-xl bg-card border border-border shadow-md transition-shadow duration-200 ease-in-out hover:shadow-lg;
+}
+
+.fab {
+  @apply fixed bottom-8 right-8 w-16 h-16 rounded-full shadow-md text-white flex items-center justify-center bg-brand-gradient;
+}

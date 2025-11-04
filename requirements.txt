@@ -1,0 +1,27 @@
+# Requisitos para rodar o Taskly (informativo)
+
+Node.js >= 18
+npm >= 9
+
+# Opcional (persistência real)
+Supabase account
+Supabase CLI (para uso local)
+
+# Principais dependências JavaScript (gerenciadas pelo package.json)
+react
+react-dom
+vite
+tailwindcss
+@tanstack/react-query
+framer-motion
+lucide-react
+axios
+axios-mock-adapter
+zod
+@supabase/supabase-js
+
+# Desenvolvimento
+@vitejs/plugin-react
+postcss
+autoprefixer
+tailwindcss-animate
