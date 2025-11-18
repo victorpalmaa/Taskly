@@ -2,6 +2,7 @@ import Header from '@/components/layout/Header'
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter } from '@/components/ui/alert-dialog'
 import { Plus, NotebookPen, Trash2, Pencil } from 'lucide-react'
 import { useGetNotes, useCreateNote, useDeleteNote, useUpdateNote } from '@/api/notesApi'
 import { Link } from 'react-router-dom'
@@ -309,9 +310,22 @@ export default function Notes() {
                     <Button variant="ghost" onClick={() => startEdit(n)} title="Editar">
                       <Pencil className="text-text-secondary" />
                     </Button>
-                    <Button variant="ghost" onClick={() => removeNote(n.id)} title="Excluir">
-                      <Trash2 className="text-text-secondary" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" title="Excluir">
+                          <Trash2 className="text-text-secondary" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Excluir anotação?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Esta ação não pode ser desfeita. Confirme para excluir.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter onConfirm={() => removeNote(n.id)} />
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
                 {n.topics && (
