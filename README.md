@@ -14,6 +14,15 @@ Taskly é um web app de tarefas focado em praticidade, organização e desempenh
 - Desempenho: revalidação com `keepPreviousData` e otimizações de mutação para resposta imediata.
 - Supabase (opcional): persistência real com schema e políticas RLS de desenvolvimento.
 
+### Sessão de Anotações de Reuniões
+- Página dedicada em `/notes` acessível pelo botão “Ir para Anotações” no Dashboard.
+- Botão “Voltar às Tasks” visível no topo da página de Anotações.
+- CRUD completo (criar, editar e excluir) com persistência em Supabase quando configurado; fallback em mock quando não.
+- Data pré-preenchida com a data atual; exibição como “Criada em: dd/MM/yyyy, HH:mm”.
+- Título destacado visualmente após salvar.
+- Acessibilidade/atalhos: pressionar `Tab` no campo de título foca a caixa de anotações.
+- Modo “Tópicos”: anotações em bullets, `Enter` cria novo tópico e `Backspace` em linha vazia remove o bullet.
+
 ## Stack
 - React + Vite
 - TailwindCSS + tailwindcss-animate
@@ -87,6 +96,53 @@ VITE_SUPABASE_ANON_KEY=<sua-anon-key>
 
 - Com ambas definidas, o app usa Supabase; sem elas, usa dados mock.
 - Se usar Supabase, execute `supabase/schema.sql` no SQL Editor para criar a tabela e políticas.
+
+### Supabase: tabela `notes`
+O schema inclui a tabela `public.notes` para persistir anotações de reuniões com RLS e trigger de atualização de data.
+
+Resumo dos campos:
+- `id` (UUID, PK)
+- `title` (TEXT)
+- `date` (DATE) — data da reunião (campo do formulário)
+- `topics` (TEXT) — conteúdo das anotações (texto ou bullets)
+- `created_date` (TIMESTAMP WITH TIME ZONE DEFAULT NOW())
+- `updated_date` (TIMESTAMP WITH TIME ZONE DEFAULT NOW())
+
+Políticas (ambiente dev):
+- SELECT, INSERT, UPDATE, DELETE: permissivas para facilitar desenvolvimento (exibidas e aplicadas em `supabase/schema.sql`).
+
+SQL (referência rápida — já incluso em `supabase/schema.sql`):
+```sql
+create table if not exists public.notes (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  date date not null,
+  topics text,
+  created_date timestamptz default now(),
+  updated_date timestamptz default now()
+);
+
+alter table public.notes enable row level security;
+
+create policy notes_select_dev on public.notes for select using (true);
+create policy notes_insert_dev on public.notes for insert with check (true);
+create policy notes_update_dev on public.notes for update using (true);
+create policy notes_delete_dev on public.notes for delete using (true);
+
+create or replace function public.set_updated_date_notes()
+returns trigger as $$
+begin
+  new.updated_date := now();
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists set_updated_date_notes_trigger on public.notes;
+create trigger set_updated_date_notes_trigger
+before update on public.notes
+for each row
+execute function public.set_updated_date_notes();
+```
 
 ## Scripts NPM
 - `npm run dev` — inicia o dev server e abre o navegador automaticamente (Vite `--open`).
