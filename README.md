@@ -1,4 +1,4 @@
-<img src="https://readme-typing-svg.demolab.com/?lines=Taskly:+Gerencie+tarefas+com+prioridade;Filtros,+Ordena%C3%A7%C3%A3o+e+Categorias;UI+r%C3%A1pida+com+atualiza%C3%A7%C3%B5es+otimistas" />
+![Taskly: Gerencie tarefas com prioridade](https://readme-typing-svg.demolab.com/?lines=Taskly:+Gerencie+tarefas+com+prioridade;Filtros,+Ordena%C3%A7%C3%A3o+e+Categorias;UI+r%C3%A1pida+com+atualiza%C3%A7%C3%B5es+otimistas)
 
 # Taskly
 
