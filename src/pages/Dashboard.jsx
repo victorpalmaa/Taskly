@@ -7,6 +7,7 @@ import TaskForm from '@/components/tasks/TaskForm'
 import { useGetTasks } from '@/api/tasksApi'
 import { useTaskFilters } from '@/hooks/useTaskFilters'
 import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 import { Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -57,6 +58,11 @@ export default function Dashboard() {
       <Header />
       <StatisticsCards />
       <FilterBar />
+      <div className="px-6 mt-4 flex justify-end">
+        <Link to="/notes">
+          <Button variant="outline">Ir para Anotações</Button>
+        </Link>
+      </div>
       {isLoading ? (
         <div className="px-6 mt-6">Carregando...</div>
       ) : (
